@@ -1,18 +1,148 @@
 {
 	"info": {
-		"_postman_id": "261ec64f-11d7-445f-9274-2c0dc9301fb7",
+		"_postman_id": "bd15366c-4a89-4b1f-be17-19cdfae21cdc",
 		"name": "KongServiceCreationAndDeletion",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "736085"
 	},
 	"item": [
 		{
-			"name": "New Request",
+			"name": "ServiceCreation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"serviceID\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{service-name}}",
+							"type": "text"
+						},
+						{
+							"key": "url",
+							"value": "http://mockbin.org",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{method_type}}://{{host}}/services/",
+					"protocol": "{{method_type}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"services",
+						""
+					]
+				}
 			},
 			"response": []
+		},
+		{
+			"name": "routeCreation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"serviceID\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "paths[]",
+							"value": "/{{service-name}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{method_type}}://{{host}}/services/{{service-name}}/routes",
+					"protocol": "{{method_type}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"services",
+						"{{service-name}}",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8001",
+			"type": "string"
+		},
+		{
+			"key": "method_type",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "service-name",
+			"value": "puneettest",
+			"type": "string"
+		},
+		{
+			"key": "serviceID",
+			"value": ""
 		}
 	]
 }
